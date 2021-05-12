@@ -1,0 +1,20 @@
+.button{
+    -fx-background-color: #312546;
+}
+.button:hover{
+    -fx-background-color: #2A1C42;
+}
+.button:pressed{
+    -fx-background-color: #746D73;
+}
+
+.check-box{
+    -fx-text-fill: #312546;
+    -fx-font-family: "Arial Bold";
+    -fx-font-size: 16;
+}
+.pane.label{
+    -fx-text-fill: #312546;
+    -fx-font-family: "Far.Badr Bold";
+    -fx-font-size: 16;
+}

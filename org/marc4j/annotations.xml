@@ -1,0 +1,5 @@
+<root>
+    <item name='org.marc4j.MarcXmlReader'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>
