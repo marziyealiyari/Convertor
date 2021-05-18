@@ -14,23 +14,24 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import org.marc4j.MarcReader;
+import org.marc4j.MarcStreamReader;
+import org.marc4j.MarcWriter;
+import org.marc4j.MarcXmlWriter;
+import org.marc4j.converter.impl.AnselToUnicode;
 import org.marc4j.marc.DataField;
 import org.marc4j.marc.Record;
 import org.marc4j.marc.Subfield;
+import org.marc4j.marc.impl.ControlFieldImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import static Utilities.Utilities.*;
 
@@ -38,7 +39,7 @@ public class Controller implements Initializable {
 
 
     @FXML
-    public static TextField counter_recordPublic, counter_recordPublic2;
+    private static TextField counter_recordPublic, counter_recordPublic2;
     @FXML
     public static int counters_public;
     @FXML
@@ -47,91 +48,104 @@ public class Controller implements Initializable {
     public TextField txtInputFile, txtMappingPath, centerName, txtMappingPathsim, centerNamesim;
     @FXML
     public TextField counter_record, counter_record2;
-    public TextField username,password,tablename;
+    public TextField username, password, tablename, mapp;
     @FXML
     public HBox Type, Typesim;
     @FXML
     public RadioButton simorgh, digilib;
     @FXML
-    public int counters;
+    private int counters;
     public String labelString;
     @FXML
-    private Pane IsoConvertPane3;
-    @FXML
-    private Pane Pane4;
-    @FXML
-    private Pane IsoConvertPane1;
-    @FXML
-    private Pane IsoConvertPane2;
+    private Pane IsoConvertPane1, IsoConvertPane2, IsoConvertPane3, Pane4, Pane5;
     @FXML
     private Button digiCancel, simorghCancel, btnConvertSim;
     @FXML
-    private ComboBox types;
+    private ComboBox<Object> types;
+    @FXML
+    private ComboBox typesmap;
+
 
     public Controller() {
     }
 
     public static void Convert(String inputPath, String mappingPath, List<String> docType, String centerName, String counter, String isotype) {
-        List<Record> convertedList = null;
+        BufferedReader br = null;
+        String item = docType.get(0);
+        List<Record> convertedList;
         OutputStreamWriter writer = null;
-        String outputPath;
+        String outputPath = null;
+        try {
+            //  for (String items : docType)
+            writer = new OutputStreamWriter(new FileOutputStream(inputPath.substring(0, inputPath.lastIndexOf('\\') + 1).concat(item.concat("_Converted.prs"))));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(inputPath)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         String ref;
-        String iso = "", file_out = "";
+        String iso, file_out;
         counters_public = 0;
-        for (String item : docType) {
-            //int j=inputPath.lastIndexOf('\\');
-            //outputPath=inputPath.substring(1, inputPath.lastIndexOf('\\'));
-            outputPath = inputPath.substring(0, inputPath.lastIndexOf('\\') + 1).concat(item.concat("_Converted.prs"));
-            if (isotype == "digilib")
-                convertedList = ConvertByMappingFile(DigilibIso.getInstance(new File(inputPath), item).getIsoRecords(), getMapping(mappingPath, item));
-            else if (isotype == "simorgh") {
-                check = false;
-                convertedList = ConvertByMappingFile(Nosa.getInstance(new File(inputPath), item).getIsoRecords(), getMapping(mappingPath, item));
-            }
-            for (Record record : convertedList) {
-                iso = makeIso(record, docType, centerName, isotype);
-                file_out = file_out + iso;
-            }
+        if (Objects.equals(isotype, "digilib")) {
             try {
-                writer = new OutputStreamWriter(new FileOutputStream(outputPath));
-                if (new File(outputPath).exists())
-                    writer.write(file_out.toString());
+                assert br != null;
+                while (br.ready()) {
+                    convertedList = ConvertByMappingFile(DigilibIso.getInstance(item, br).getIsoRecords(), getMapping(mappingPath, item));
+                    file_out = "";
+                    for (Record record : convertedList) {
+                        iso = makeIso(record, docType, centerName, isotype);
+                        file_out = file_out + iso;
+                    }
+                    writer.write(file_out);
+                }
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+        } else if (Objects.equals(isotype, "simorgh")) {
+            check = false;
+            try {
+                assert br != null;
+                while (br.ready()) {
+                    convertedList = ConvertByMappingFile(Nosa.getInstance(item, br).getIsoRecords(), getMapping(mappingPath, item));
+                    file_out = "";
+                    for (Record record : convertedList) {
+                        iso = makeIso(record, docType, centerName, isotype);
+                        file_out = file_out + iso;
+                    }
+                    writer.write(file_out);
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-
-    @FXML
-    public static String makeIso(Record record, List docType, String centerName, String isoType) {
-        String iso = "", tag = "", length = "", offset = "", data = "", data2 = "", temp = "", simStr = "";
+    private static String makeIso(Record record, List<String> docType, String centerName, String isoType) {
+        String iso, tag, length, offset, data, data2 = "", temp, simStr;
         referenced = "";
-        String newStr = "";
-        byte[] bytes2 = null;
-        int L = 0, count = 0;
+        String newStr;
+        byte[] bytes2;
+        int L, count = 0;
         StringBuilder newtemp = new StringBuilder();
         for (DataField df : record.getDataFields()) {
             tag = df.toString().substring(0, 3);
             data = df.toString().substring(4);
-            DataField field = df;
-            List subfields = field.getSubfields();
-            Iterator i = subfields.iterator();
-            while (i.hasNext()) {
-                Subfield subfield = (Subfield) i.next();
+            List<Subfield> subfields = df.getSubfields();
+            for (Object subfield1 : subfields) {
+                Subfield subfield = (Subfield) subfield1;
                 char code = subfield.getCode();
                 String data1 = subfield.getData();
 
-                if (isoType == "digilib") {
+                if (Objects.equals(isoType, "digilib")) {
                     // مرجع
                     if (!record.toString().contains("è\u200F¤")) {
                         referenced = "ô";
                     }
                     //مرجع
 //check farsi number & center
-                    if (docType.get(0).toString().charAt(1) == 'F') {
+                    if (docType.get(0).charAt(1) == 'F') {
                         StringBuilder checkFarsi = new StringBuilder(data1);
                         if (!tag.equals("100")) {
                             changeLatinToFarsi(checkFarsi);
@@ -167,14 +181,13 @@ public class Controller implements Initializable {
                         sign.insert(sign.indexOf(":"), "\u001Fc");
 
 
-                if (isoType == "simorgh") {
+                if (Objects.equals(isoType, "simorgh")) {
                     if ((tag.equals("915")) || (tag.equals("200")) & subfield.getCode() == 'b' || (tag.equals("801") && subfield.getCode() == 'b')) {
                         if (tag.equals("801")) data1 = centerName;
                         String oldStr = data1;
                         byte[] bytes = oldStr.getBytes(StandardCharsets.UTF_8);
                         newStr = new String(bytes);
-                        StringBuilder sign3 = new StringBuilder(newStr);
-                        sign = sign3;
+                        sign = new StringBuilder(newStr);
                     } else {
                         bytes2 = data1.getBytes();
                         simStr = new String(bytes2, StandardCharsets.UTF_8);
@@ -250,13 +263,12 @@ public class Controller implements Initializable {
                         String newstr2 = new String(sign2);
                         byte[] bytes = newstr2.getBytes(StandardCharsets.UTF_8);
                         newStr = new String(bytes);
-                        StringBuilder sign3 = new StringBuilder(newStr);
-                        sign = sign3;
+                        sign = new StringBuilder(newStr);
                     }
                 }
 
                 //Digilib
-                if (isoType == "digilib") {
+                if (Objects.equals(isoType, "digilib")) {
                     if (tag.equals("200") && subfield.getCode() == 'g') {
                         if (docType.toString().indexOf('L') <= 0)
                             if (data1.indexOf(0) != 'ف') sign.insert(0, "ف ");
@@ -323,17 +335,26 @@ public class Controller implements Initializable {
 
                     //chap
                     if (tag.equals("923") && subfield.getCode() == 'a') {
-                        if (data1.equals("\u200C‘•\u200E"))
-                            sign.replace(0, data1.length(), "p");
-                        else if (data1.equals("\u200C‘•\u200E - ‘َî—¤ّ÷\u200Fî\u200E"))
-                            sign.replace(0, data1.length(), "pe");
-                        else if (data1.equals("‘َî—¤ّ÷\u200Fî\u200E"))
-                            sign.replace(0, data1.length(), "e");
-                        else if (data1.equals("‘َî—¤ّ÷\u200Fî\u200E - َّ\u200D êھ¤¢ù"))
-                            sign.replace(0, data1.length(), "ec");
-                        else if (data1.equals("\u200C‘•\u200E - َّ\u200D êھ¤¢ù"))
-                            sign.replace(0, data1.length(), "pc");
-                        else sign.replace(0, data1.length(), "p");
+                        switch (data1) {
+                            case "\u200C‘•\u200E":
+                                sign.replace(0, data1.length(), "p");
+                                break;
+                            case "\u200C‘•\u200E - ‘َî—¤ّ÷\u200Fî\u200E":
+                                sign.replace(0, data1.length(), "pe");
+                                break;
+                            case "‘َî—¤ّ÷\u200Fî\u200E":
+                                sign.replace(0, data1.length(), "e");
+                                break;
+                            case "‘َî—¤ّ÷\u200Fî\u200E - َّ\u200D êھ¤¢ù":
+                                sign.replace(0, data1.length(), "ec");
+                                break;
+                            case "\u200C‘•\u200E - َّ\u200D êھ¤¢ù":
+                                sign.replace(0, data1.length(), "pc");
+                                break;
+                            default:
+                                sign.replace(0, data1.length(), "p");
+                                break;
+                        }
                     }
                     //chap
 
@@ -435,21 +456,25 @@ public class Controller implements Initializable {
 
         }
         iso = length + "nam00220" + offset + "1n04500" + iso;
-        if (isoType == "digilib") {
+        if (Objects.equals(isoType, "digilib")) {
             counters_public++;
             counter_recordPublic.setText(String.valueOf(counters_public));
-        } else if (isoType == "simorgh") {
+        } else if (Objects.equals(isoType, "simorgh")) {
             counters_public++;
             counter_recordPublic2.setText(String.valueOf(counters_public));
+
         }
+
+
         return iso;
+
     }
 
 
     @FXML
 
 
-    public ComboBox getTypes() {
+    public ComboBox<Object> getTypes() {
         return types;
     }
 
@@ -460,7 +485,8 @@ public class Controller implements Initializable {
 
     @FXML
     void btnExitHandler(MouseEvent mouseEvent) {
-        System.exit(0);
+        //  System.exit(0);
+        Runtime.getRuntime().halt(0);
     }
 
     @FXML
@@ -475,23 +501,24 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    public void btnIsoInputFileHandler1(MouseEvent mouseEvent) {
+        mapp.setText(Utilities.InputDialog("TEXT files (*.txt)", "*.txt;*.iso;*.prs").getPath());
+    }
+
+    @FXML
     public void btnNextIsoConvert(MouseEvent mouseEvent) {
         Form form = new Form();
         if (form.checkForm(txtInputFile)) {
             if (digilib.isSelected()) {
                 String[][] typeArray = DigilibIso.findAllTypes(txtInputFile.getText());
-                List<String> typeList = new ArrayList<String>();
+                List<String> typeList = new ArrayList<>();
                 for (int i = 0; i < typeArray[1].length; i++)
                     if (typeArray[1][i].equals("1")) {
                         if (Type.getChildren().size() > 0)
                             Type.getChildren().remove(0);
                         Type.getChildren().add(new CheckBox(typeArray[0][i]));
                     }
-            } else if (simorgh.isSelected()) {
-                //  Type.getChildren().add(new CheckBox(types.getValue()));
-
             }
-
             if (Type.getChildren().isEmpty())
                 Type.getChildren().add(new Label("مدرکی وجود ندارد."));
             IsoConvertPane1.disableProperty().set(true);
@@ -510,7 +537,7 @@ public class Controller implements Initializable {
 
     @FXML
     void btnConvertHandler(MouseEvent event) {
-        List<String> typeList = new ArrayList<String>();
+        List<String> typeList = new ArrayList<>();
         String reference = "";
         if (digilib.isSelected()) {
             for (int i = 0; i < Type.getChildren().size(); i++)
@@ -542,21 +569,28 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    void btnCancelDB(MouseEvent event) {
+        Pane4.visibleProperty().set(false);
+        Pane4.disableProperty().set(true);
+        IsoConvertPane1.visibleProperty().set(true);
+        IsoConvertPane1.disableProperty().set(false);
+    }
+
+    @FXML
     void DBConect(MouseEvent event) throws SQLException {
-        String url= "jdbc:sqlserver://localhost:1433";
-        String user =username.getText() ;
+        String url = "jdbc:sqlserver://localhost:1433";
+        String user = username.getText();
         String pw = password.getText();
         try {
-        Connection con = DriverManager.getConnection(url, user, pw);
-        if (con != null) {
-            JOptionPane.showMessageDialog(null, "DB Connection is OK", "", JOptionPane.INFORMATION_MESSAGE);
-            con.close();
-        }
-        else
-            JOptionPane.showMessageDialog(null, "NO DB Connection!!!", "", JOptionPane.INFORMATION_MESSAGE);
+            Connection con = DriverManager.getConnection(url, user, pw);
+            if (con != null) {
+                JOptionPane.showMessageDialog(null, "DB Connection is OK", "", JOptionPane.INFORMATION_MESSAGE);
+                con.close();
+            } else
+                JOptionPane.showMessageDialog(null, "NO DB Connection!!!", "", JOptionPane.INFORMATION_MESSAGE);
             Connection conn = DriverManager.getConnection(url, user, pw);
             String sql;
-            switch (sql = "SELECT * FROM [alzahra].[dbo].["+ tablename.getText()+"]") {
+            switch (sql = "SELECT * FROM [alzahra].[dbo].[" + tablename.getText() + "]") {
             }
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -566,19 +600,51 @@ public class Controller implements Initializable {
             }
             rs.close();
             stmt.close();
+            assert con != null;
             con.close();
 
         } catch (Exception ee) {
             JOptionPane.showMessageDialog(null, ee.getMessage(), "", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
     @FXML
     void DBConnection(MouseEvent event) {
         Pane4.visibleProperty().set(true);
         Pane4.disableProperty().set(false);
         IsoConvertPane1.visibleProperty().set(false);
         IsoConvertPane1.disableProperty().set(true);
+        IsoConvertPane2.visibleProperty().set(false);
+        IsoConvertPane2.disableProperty().set(true);
+        IsoConvertPane3.visibleProperty().set(false);
+        IsoConvertPane3.disableProperty().set(true);
+        Pane5.visibleProperty().set(false);
+        Pane5.disableProperty().set(true);
+
     }
+
+    @FXML
+    void mapping(MouseEvent event) {
+        Pane5.visibleProperty().set(true);
+        Pane5.disableProperty().set(false);
+        IsoConvertPane1.visibleProperty().set(false);
+        IsoConvertPane1.disableProperty().set(true);
+        IsoConvertPane2.visibleProperty().set(false);
+        IsoConvertPane2.disableProperty().set(true);
+        IsoConvertPane3.visibleProperty().set(false);
+        IsoConvertPane3.disableProperty().set(true);
+        Pane4.visibleProperty().set(false);
+        Pane4.disableProperty().set(true);
+    }
+
+    @FXML
+    void prelevelmap() {
+        Pane5.visibleProperty().set(false);
+        Pane5.disableProperty().set(true);
+        IsoConvertPane1.visibleProperty().set(true);
+        IsoConvertPane1.disableProperty().set(false);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Controller.counter_recordPublic = counter_record;
@@ -586,6 +652,32 @@ public class Controller implements Initializable {
         Controller.counter_recordPublic2 = counter_record2;
     }
 
-
+    @FXML
+    public void makemapping() throws IOException {
+        try {
+            InputStream input = new FileInputStream(mapp.getText());
+            OutputStream out = new FileOutputStream(mapp.getText().replace(mapp.getText().substring(mapp.getText().lastIndexOf('.'), mapp.getText().length()), ".xml"));
+            MarcReader reader = new MarcStreamReader(input);
+            MarcWriter writer = new MarcXmlWriter(out, true);
+            AnselToUnicode converter = new AnselToUnicode();
+            writer.setConverter(converter);
+            while (reader.hasNext()) {
+                Record record = reader.next();
+                for (DataField df : record.getDataFields()) {
+                    for (Subfield d : df.getSubfields()) {
+                        d.setData(d.getData().replace(d.getData(), "#Field^SubField#"));
+                    }
+                }
+                record.addVariableField(new ControlFieldImpl("001",typesmap.getValue().toString()));
+                writer.write(record);
+            }
+            writer.close();
+            out.close();
+            JOptionPane.showMessageDialog(null, "Done", "", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception c) {
+            System.out.println(c.getMessage());
+        }
+    }
 }
+
 

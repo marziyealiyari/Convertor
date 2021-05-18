@@ -5,13 +5,13 @@ import Convert.IsoIF;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class DigilibIso extends Iso implements IsoIF {
 
 
-    private static IsoIF instance = null;
-    private List<IsoRecord> isoRecords = null;
+    private List isoRecords = null;
     public static  String countPlus;
 
     //Cunstructors
@@ -29,31 +29,30 @@ public class DigilibIso extends Iso implements IsoIF {
     }
 
 
-    public DigilibIso(File input, String docType) {
-        this.setInputFile(input);
+    private DigilibIso(String docType, BufferedReader br) {
+       // this.setInputFile(input);
         try {
-            isoRecords = read(docType);
+            isoRecords = read(docType,br);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
     }
 
-    public static DigilibIso getInstance(File input) {
-        if (instance == null)
-            instance = new DigilibIso(input);
+//    public static DigilibIso getInstance(File input) {
+//        if (instance == null)
+//            instance = new DigilibIso(input);
+//        return (DigilibIso) instance;
+//    }
+
+    public static DigilibIso getInstance(String docType, BufferedReader br) {
+       // if (instance == null)
+        IsoIF instance = new DigilibIso(docType, br);
         return (DigilibIso) instance;
     }
 
-    public static DigilibIso getInstance(File input, String docType) {
-        if (instance == null)
-            instance = new DigilibIso(input, docType);
-        return (DigilibIso) instance;
-    }
-
-    public static boolean checkIso(String item) {
+    static boolean checkIso(String item) {
         int i, recordLength, isolength, isoDir;
-        i = item.indexOf("#");
         isolength = Integer.parseInt(item.substring(1, 5));
         recordLength = item.length();
         if (item.substring(20, 22).equals("45"))
@@ -63,7 +62,7 @@ public class DigilibIso extends Iso implements IsoIF {
     }
 
     public static String[][] findAllTypes(String path) {
-        String data = "";
+        String data;
         String data1 = "";
         File iso = new File(path);
         boolean flag = false;
@@ -76,11 +75,11 @@ public class DigilibIso extends Iso implements IsoIF {
 //            data1 = br.readLine();
             while (data != null) {
                 for (int i = 0; i < typeList[1].length; i++)
-                    if ((data1.indexOf("#}".concat(typeList[0][i]).concat("{#")) >= 0 || data1.indexOf("#{".concat(typeList[0][i]).concat("}#")) >= 0) && typeList[1][i] != "1") {
+                    if ((data1.contains("#}".concat(typeList[0][i]).concat("{#")) || data1.contains("#{".concat(typeList[0][i]).concat("}#"))) && !Objects.equals(typeList[1][i], "1")) {
                         typeList[1][i] = "1";
                         flag = true;
                     }
-                if (flag == true) break;
+                if (flag) break;
                 data = br.readLine();
                 data1 = data1 + data;
 
@@ -146,11 +145,11 @@ public class DigilibIso extends Iso implements IsoIF {
 //                String data1 = subfield.getData();
 //
 //
-//                // مرجع
-//                if (!record.toString().contains("è\u200F¤")) {
-//                    referenced = "ô";
+//                // ????
+//                if (!record.toString().contains("?\u200F?")) {
+//                    referenced = "?";
 //                }
-//                //مرجع
+//                //????
 //
 //
 ////check farsi number & center
@@ -180,57 +179,57 @@ public class DigilibIso extends Iso implements IsoIF {
 //                if (tag.equals("200") && subfield.getCode() == 'f')
 //                    if (data1.indexOf(0) != '/') sign.insert(0, "/ ");
 //                if (tag.equals("200") && subfield.getCode() == 'g')
-//                    if (data1.indexOf(0) != 'ف') sign.insert(0, "ف ");
+//                    if (data1.indexOf(0) != '?') sign.insert(0, "? ");
 //                if (tag.equals("200") && subfield.getCode() == 'e')
 //                    if (data1.indexOf(0) != ':') sign.insert(0, ": ");
 //                if (tag.equals("210") && subfield.getCode() == 'c')
 //                    if (data1.indexOf(0) != ':') sign.insert(0, ": ");
 //                if (tag.equals("210") && subfield.getCode() == 'd')
-//                    if (data1.indexOf(0) != 'ٹ') sign.insert(0, "ٹ ");
+//                    if (data1.indexOf(0) != '?') sign.insert(0, "? ");
 //                if (tag.equals("215") && subfield.getCode() == 'c')
 //                    if (data1.indexOf(0) != ':') sign.insert(0, ": ");
 //                if (tag.equals("225") && subfield.getCode() == 'v') {
 //                    if (textLanguage(sign).contains("F"))
-//                        if (data1.indexOf(0) != 'ف') sign.insert(0, "ف ");
+//                        if (data1.indexOf(0) != '?') sign.insert(0, "? ");
 //                    if (textLanguage(sign).contains("L"))
 //                        if (data1.indexOf(0) != ';') sign.insert(0, "; ");
 //                }
 //                if (tag.equals("700") && subfield.getCode() == 'f')
-//                    if (data1.indexOf(0) != 'ٹ') sign.insert(0, "ٹ ");
+//                    if (data1.indexOf(0) != '?') sign.insert(0, "? ");
 //                if (tag.equals("700") && subfield.getCode() == '4')
-//                    if (data1.indexOf(0) != 'ٹ') sign.insert(0, "ٹ ");
+//                    if (data1.indexOf(0) != '?') sign.insert(0, "? ");
 //                if (tag.equals("702") && subfield.getCode() == 'f')
-//                    if (data1.indexOf(0) != 'ٹ') sign.insert(0, "ٹ ");
+//                    if (data1.indexOf(0) != '?') sign.insert(0, "? ");
 //                if (tag.equals("702") && subfield.getCode() == '4')
-//                    if (data1.indexOf(0) != 'ٹ') sign.insert(0, "ٹ ");
+//                    if (data1.indexOf(0) != '?') sign.insert(0, "? ");
 //                if (tag.equals("215") && subfield.getCode() == 'a')
 //                    if (data1.contains(":")) sign.insert(sign.indexOf(":"), "\u001Fc");
 //                //marking
 //
 //                //chap
 //                if (tag.equals("923") && subfield.getCode() == 'a') {
-//                    if (data1.equals("\u200C‘•\u200E")) sign.replace(0, data1.length(), "p");
-//                    else if (data1.equals("\u200C‘•\u200E - ‘َî—¤ّ÷\u200Fî\u200E"))
+//                    if (data1.equals("\u200C??\u200E")) sign.replace(0, data1.length(), "p");
+//                    else if (data1.equals("\u200C??\u200E - ?????\u200F?\u200E"))
 //                        sign.replace(0, data1.length(), "pe");
-//                    else if (data1.equals("‘َî—¤ّ÷\u200Fî\u200E")) sign.replace(0, data1.length(), "e");
-//                    else if (data1.equals("‘َî—¤ّ÷\u200Fî\u200E - َّ\u200D êھ¤¢ù"))
+//                    else if (data1.equals("?????\u200F?\u200E")) sign.replace(0, data1.length(), "e");
+//                    else if (data1.equals("?????\u200F?\u200E - ??\u200D ???"))
 //                        sign.replace(0, data1.length(), "ec");
-//                    else if (data1.equals("\u200C‘•\u200E - َّ\u200D êھ¤¢ù")) sign.replace(0, data1.length(), "pc");
+//                    else if (data1.equals("\u200C??\u200E - ??\u200D ???")) sign.replace(0, data1.length(), "pc");
 //                    else sign.replace(0, data1.length(), "p");
 //                }
 //                //chap
 //
 //                // acquisition
 //                if (tag.equals("999") && subfield.getCode() == 'd') {
-//                    if (data1.contains("،¤\u200F¢گ¤\u200E") || data1.contains("پ"))   //1
+//                    if (data1.contains("??\u200F???\u200E") || data1.contains("?"))   //1
 //                        sign.replace(0, data1.length(), "a\u001Fd0a\u001Fd1a\u001Fd2a");
-//                    else if (data1.contains("\u0090û¢\u0090þü") || data1.contains("‚"))   //2
+//                    else if (data1.contains("\u0090??\u0090??") || data1.contains("?"))   //2
 //                        sign.replace(0, data1.length(), "b\u001Fd0a\u001Fd1a\u001Fd2a");
-//                    else if (data1.contains("øìêü") || data1.contains("ƒ"))   //3
+//                    else if (data1.contains("????") || data1.contains("?"))   //3
 //                        sign.replace(0, data1.length(), "j\u001Fd0a\u001Fd1a\u001Fd2a");
-//                    else if (data1.contains("—øóþ¢") || data1.contains("„"))   //4
+//                    else if (data1.contains("?????") || data1.contains("?"))   //4
 //                        sign.replace(0, data1.length(), "i\u001Fd0a\u001Fd1a\u001Fd2a");
-//                    else if (data1.contains("…"))   //5
+//                    else if (data1.contains("?"))   //5
 //                        sign.replace(0, data1.length(), "z\u001Fd0a\u001Fd1a\u001Fd2a");
 //                    else sign.replace(0, data1.length(), "a\u001Fd0a\u001Fd1a\u001Fd2a");
 //                }
@@ -238,7 +237,7 @@ public class DigilibIso extends Iso implements IsoIF {
 //
 //                //reference
 //                if (tag.equals("999") && subfield.getCode() == 'a') {
-//                    if (data1.contains("è\u200F¤ُ¤›â"))   //غیرمرجع
+//                    if (data1.contains("?\u200F?????"))   //???????
 //                        sign.replace(0, data1.length(), "1");
 //                    else {
 //                        sign.replace(0, data1.length(), "0");
@@ -248,14 +247,14 @@ public class DigilibIso extends Iso implements IsoIF {
 //
 //                if ((tag.equals("680") && subfield.getCode() == 'b') || (tag.equals("676") && subfield.getCode() == 'b') || (tag.equals("686") && subfield.getCode() == 'b')) {
 //                    if (!data1.equals(""))
-//                        if (referenced.equals("ô")) {
+//                        if (referenced.equals("?")) {
 //                            sign.insert(sign.length(), "\u001F9" + referenced);
 //                        }
 //
 //                }
 //                if ((tag.equals("680") && subfields.size() == 1 && subfield.getCode() == 'a') || (tag.equals("676") && subfields.size() == 1 && subfield.getCode() == 'a') || (tag.equals("686") && subfields.size() == 1 && subfield.getCode() == 'a')) {
 //                    if (!data1.equals(""))
-//                        if (referenced.equals("ô")) {
+//                        if (referenced.equals("?")) {
 //                            sign.insert(sign.length(), "\u001F9" + referenced);
 //                        }
 //
@@ -266,9 +265,9 @@ public class DigilibIso extends Iso implements IsoIF {
 //
 //
 //                if (tag.equals("410") && subfield.getCode() == 't') {
-//                    if (data1.indexOf("ف") > 0) {
-//                        sign.insert(data1.indexOf("ف"), "\u001Fv");
-//                        sign.insert(data1.indexOf("ف") + 3, " ");
+//                    if (data1.indexOf("?") > 0) {
+//                        sign.insert(data1.indexOf("?"), "\u001Fv");
+//                        sign.insert(data1.indexOf("?") + 3, " ");
 //
 //                    } else if (data1.indexOf(";") > 0) {
 //                        sign.insert(data1.indexOf(";"), "\u001Fv");
@@ -326,7 +325,7 @@ public class DigilibIso extends Iso implements IsoIF {
 
 
     //Getter and Setter
-    public List<IsoRecord> getIsoRecords() {
+    public List getIsoRecords() {
         return isoRecords;
     }
 
@@ -335,17 +334,17 @@ public class DigilibIso extends Iso implements IsoIF {
     }
 
     //Methodes
-    @Override
-    public List read() throws FileNotFoundException {
-        return read("");
-    }
+//    @Override
+//    public List read() throws FileNotFoundException {
+//        return read("");
+//    }
 
-    public List read(String docType) throws FileNotFoundException {
+    private List read(String docType, BufferedReader br) throws FileNotFoundException {
         String data = "";
         File iso = this.getInputFile();
-        List<IsoRecord> isoList = new ArrayList<IsoRecord>();
+        List<IsoRecord> isoList = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(iso)));
+         //   BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(iso)));
             do {
                 do
                     data = data.concat(br.readLine());
@@ -356,11 +355,16 @@ public class DigilibIso extends Iso implements IsoIF {
                 else if (data.indexOf("#}".concat(docType).concat("{#")) > 0 || data.indexOf("#{".concat(docType).concat("}#")) > 0)
                     isoList.add(new IsoRecord(data));
                 data = br.readLine();
-            } while (data != null);
+            } while (data != null & isoList.size() != 1000);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return isoList;
+    }
+
+    @Override
+    public List read() throws FileNotFoundException {
+        return null;
     }
 
     @Override

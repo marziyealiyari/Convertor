@@ -17,341 +17,541 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="750.0" style="-fx-background-color: #ABA7B4;" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="home.controllers.Controller">
-   <children>
-      <VBox alignment="TOP_RIGHT" layoutX="518.0" prefHeight="400.0" prefWidth="232.0" style="-fx-background-color: #312546;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Pane prefHeight="103.0" prefWidth="232.0">
-               <children>
-                  <FontAwesomeIcon fill="WHITE" iconName="COGS" layoutX="138.0" layoutY="81.0" size="4em" />
-                  <Button fx:id="btnExit" layoutX="206.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#btnExitHandler" prefHeight="25.0" prefWidth="24.0" stylesheets="@../css/styling.css" text="X" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
-               </children>
-            </Pane>
-            <Button fx:id="btnDBConvert" onMouseClicked="#DBConnection" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="232.0" stylesheets="@../css/styling.css" text="کانورت دیتابیس  " textFill="#fffdfd">
-               <font>
-                  <Font name="Farsi Beirut" size="25.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" iconName="DATABASE" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnEditIso" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="233.0" stylesheets="@../css/styling.css" text="ویرایش ایزو  " textFill="#fffdfd">
-               <font>
-                  <Font name="Farsi Beirut" size="25.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" iconName="EDIT" />
-               </graphic>
-               <padding>
-                  <Insets left="40.0" />
-               </padding>
-            </Button>
-            <Button fx:id="btnSetting" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="233.0" stylesheets="@../css/styling.css" text="تنظیمات  " textFill="#fffdfd">
-               <font>
-                  <Font name="Farsi Beirut" size="25.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" iconName="WRENCH" />
-               </graphic>
-               <padding>
-                  <Insets left="70.0" />
-               </padding>
-            </Button>
-         </children>
-      </VBox>
-      <Pane fx:id="IsoConvertPane1" layoutX="-1.0" prefHeight="400.0" prefWidth="619.0">
-         <children>
-            <TextField fx:id="txtInputFileSimorgh" layoutX="172.0" layoutY="157.0" prefHeight="28.0" prefWidth="146.0" />
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="372.0" layoutY="95.0" text="فایل ورودی:" textAlignment="RIGHT" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="332.0" layoutY="24.0" text="کانورت ایزو" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="30.0" />
-               </font>
-            </Label>
-            <HBox layoutX="16.0" layoutY="95.0" prefHeight="45.0" prefWidth="351.0">
-               <children>
-                  <RadioButton fx:id="simorgh" alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="5.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0" prefWidth="96.0" selected="true" text="سیمرغ" textAlignment="RIGHT" textFill="#312546">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="sourceDataType" />
-                     </toggleGroup>
-                     <font>
-                        <Font name="Farsi Beirut" size="20.0" />
-                     </font>
-                  </RadioButton>
-                  <RadioButton fx:id="digilib" alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="5.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="132.0" text="دیجیلیب   " textAlignment="RIGHT" textFill="#312546" toggleGroup="$sourceDataType">
-                     <font>
-                        <Font name="Farsi Beirut" size="20.0" />
-                     </font>
-                  </RadioButton>
-               </children>
-            </HBox>
-            <TextField fx:id="txtInputFile" layoutX="172.0" layoutY="157.0" prefHeight="28.0" prefWidth="146.0" text="E:\version\astan\material\bf\fbook  utf8   665534record.ISO" />
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="329.0" layoutY="158.0" text="آدرس فایل ورودی:" textAlignment="JUSTIFY" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="443.0" prefWidth="750.0"
+            style="-fx-background-color: #ABA7B4;"
+            xmlns="http://javafx.com/javafx/8.0.112"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="home.controllers.Controller">
 
-
-
-            <Button fx:id="btnIsoinputFile" layoutX="127.0" layoutY="154.0" mnemonicParsing="false" onMouseClicked="#btnIsoInputFileHandler" prefHeight="28.0" prefWidth="33.0" stylesheets="@../css/isoConvertStyle.css">
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="FOLDER_OPEN" size="2em" text="" />
-               </graphic></Button>
-            <RadioButton alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="5.0" layoutX="230.0" layoutY="235.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0" selected="true" text="آذرسا" textAlignment="RIGHT" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-               <toggleGroup>
-                  <ToggleGroup fx:id="outputDataType" />
-               </toggleGroup>
-            </RadioButton>
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="340.0" layoutY="235.0" text="نوع فایل خروجی:" textAlignment="JUSTIFY" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnNextIsoConvert" alignment="BASELINE_LEFT" graphicTextGap="0.0" layoutY="381.0" mnemonicParsing="false" onMouseClicked="#btnNextIsoConvert" prefHeight="60.0" prefWidth="131.0" stylesheets="@../css/isoConvertStyle.css" text=" بعدی" textAlignment="LEFT" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_LEFT" size="1em" text="" wrappingWidth="30.0" />
-               </graphic>
-            </Button>
-         </children>
+   <VBox alignment="TOP_RIGHT" layoutX="518.0" prefHeight="400.0"
+         prefWidth="232.0" style="-fx-background-color: #312546;"
+         AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane prefHeight="103.0" prefWidth="232.0">
+         <FontAwesomeIcon fill="WHITE" iconName="COGS" layoutX="138.0"
+                          layoutY="81.0" size="4em"/>
+         <Button  layoutX="206.0" layoutY="2.0"
+                 mnemonicParsing="false" onMouseClicked="#btnExitHandler"
+                 prefHeight="25.0" prefWidth="24.0"
+                 stylesheets="@../css/styling.css" text="X"
+                 textFill="WHITE">
+            <font>
+               <Font name="System Bold" size="12.0"/>
+            </font>
+         </Button>
       </Pane>
-      <Pane fx:id="IsoConvertPane3" disable="true" layoutX="-1.0" prefHeight="400.0" prefWidth="519.0" stylesheets="@../css/styling.css" visible="false">
-         <children>
-            <Label layoutX="325.0" layoutY="24.0" text="ایزو سیمرغ" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="30.0" />
-               </font>
-            </Label>
-            <Label layoutX="368.0" layoutY="100.0" text="نوع ماده:" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <ComboBox id="types" fx:id="types" layoutX="120" layoutY="108.0" prefWidth="187.0" value="BF">
-               <items>
-                  <FXCollections fx:id="typeValue" fx:factory="observableArrayList">
-                     <String fx:value="BF" /> <String fx:value="BL" /><String fx:value="AF" /><String fx:value="AL" />
-                     <String fx:value="TF" /><String fx:value="TL" /><String fx:value="PF" /><String fx:value="PL" />
-                     <String fx:value="VF" /><String fx:value="VL" />
-                  </FXCollections>
-               </items>
-            </ComboBox>
-            <HBox fx:id="Typesim" alignment="CENTER_RIGHT" layoutX="34.0" layoutY="124.0" prefHeight="48.0" prefWidth="429.0" spacing="3.0" stylesheets="@../css/styling.css">
-               <padding>
-                  <Insets right="3.0" />
-               </padding>
-            </HBox>
-            <TextField fx:id="txtMappingPathsim" layoutX="174.0" layoutY="188.0" text="C:\Users\aliyari\IdeaProjects\Convertor\bf.xml" />
-            <Label layoutX="337.0" layoutY="187.0" text=": mapping فایل" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnMappingInputFilesim" layoutX="126.0" layoutY="185.0" mnemonicParsing="false" onMouseClicked="#btnMappingInputFileHandler" prefHeight="28.0" prefWidth="33.0" stylesheets="@../css/isoConvertStyle.css">
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="FOLDER_OPEN" size="2em" text="" />
-               </graphic>
-            </Button>
-            <Label layoutX="389.0" layoutY="235.0" prefHeight="26.0" prefWidth="76.0" text="نام مرکز: " textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <TextField fx:id="centerNamesim" layoutX="137.0" layoutY="235.0" prefHeight="25.0" prefWidth="245.0" />
-            <Label layoutX="383.0" layoutY="277.0" text="شماره ثبت: " textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <TextField layoutX="263.0" layoutY="278.0" prefHeight="25.0" prefWidth="111.0" text="" />
-            <Label layoutX="116.0" layoutY="278.0" text="کد محل نگهداری: " textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="383.0" layoutY="330.0" text="تعداد رکورد:" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <TextField fx:id="counter_record2" layoutX="263.0" layoutY="330.0" prefHeight="25.0" prefWidth="111.0" text="0" />
-            <TextField layoutX="44.0" layoutY="279.0" prefHeight="25.0" prefWidth="66.0" />
-            <Button fx:id="btnConvertSim" contentDisplay="RIGHT" layoutX="4.0" layoutY="381.0" mnemonicParsing="false" onMouseClicked="#btnConvertHandler" prefHeight="60.0" prefWidth="131.0" text="کانورت" textAlignment="RIGHT" textFill="#312546">
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="CHECK_CIRCLE" size="1.0em" textAlignment="RIGHT" />
-               </graphic>
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-               <stylesheets>
-                  <URL value="@../css/styling.css" />
-                  <URL value="@../css/isoConvertStyle.css" />
-               </stylesheets>
-            </Button>
-            <Button fx:id="simorghCancel" contentDisplay="RIGHT" layoutX="379.0" layoutY="388.0" minWidth="105.0" mnemonicParsing="false" onMouseClicked="#btnCancel" prefHeight="48.0" prefWidth="136.0" text="بازگشت" textAlignment="LEFT" textFill="#312546">
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_RIGHT" size="1.0em" textAlignment="RIGHT" />
-               </graphic>
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-               <stylesheets>
-                  <URL value="@../css/styling.css" />
-                  <URL value="@../css/isoConvertStyle.css" />
-               </stylesheets>
-            </Button>
+      <Button  contentDisplay="RIGHT"
+              graphicTextGap="15.0" layoutX="10.0" layoutY="10.0"
+              mnemonicParsing="false" onMouseClicked="#DBConnection"
+              prefHeight="71.0" prefWidth="232.0"
+              stylesheets="@../css/styling.css" text="کانورت دیتابیس  "
+              textFill="#fffdfd">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" iconName="DATABASE"/>
+         </graphic>
+      </Button>
+      <Button  contentDisplay="RIGHT" graphicTextGap="15.0"
+              layoutX="10.0" layoutY="81.0" mnemonicParsing="false"
+              onMouseClicked="#mapping" prefHeight="71.0" prefWidth="233.0"
+              stylesheets="@../css/styling.css" text="ساخت mapping"
+              textFill="#fffdfd">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" iconName="EDIT"/>
+         </graphic>
+         <padding>
+            <Insets left="40.0"/>
+         </padding>
+      </Button>
+      <Button  contentDisplay="RIGHT" graphicTextGap="15.0"
+              layoutX="10.0" layoutY="81.0" mnemonicParsing="false"
+              prefHeight="71.0" prefWidth="233.0"
+              stylesheets="@../css/styling.css" text="تنظیمات  "
+              textFill="#fffdfd">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" iconName="WRENCH"/>
+         </graphic>
+         <padding>
+            <Insets left="70.0"/>
+         </padding>
+      </Button>
+   </VBox>
+   <Pane fx:id="IsoConvertPane1" layoutX="-1.0" prefHeight="400.0"
+         prefWidth="619.0">
+      <TextField layoutX="172.0" layoutY="157.0"
+                 prefHeight="28.0" prefWidth="146.0"/>
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="372.0"
+             layoutY="95.0" text="فایل ورودی:" textAlignment="RIGHT"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <Label layoutX="332.0" layoutY="24.0" text="کانورت ایزو"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="30.0"/>
+         </font>
+      </Label>
+      <HBox layoutX="16.0" layoutY="95.0" prefHeight="45.0"
+            prefWidth="351.0">
+         <RadioButton fx:id="simorgh" alignment="CENTER_RIGHT"
+                      contentDisplay="RIGHT" graphicTextGap="5.0"
+                      mnemonicParsing="false"
+                      nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0"
+                      prefWidth="96.0" selected="true" text="سیمرغ"
+                      textAlignment="RIGHT" textFill="#312546">
+            <toggleGroup>
+               <ToggleGroup fx:id="sourceDataType"/>
+            </toggleGroup>
+            <font>
+               <Font name="Farsi Beirut" size="20.0"/>
+            </font>
+         </RadioButton>
+         <RadioButton fx:id="digilib" alignment="CENTER_RIGHT"
+                      contentDisplay="RIGHT" graphicTextGap="5.0"
+                      layoutX="10.0" layoutY="10.0"
+                      mnemonicParsing="false"
+                      nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0"
+                      prefWidth="132.0" text="دیجیلیب   "
+                      textAlignment="RIGHT" textFill="#312546"
+                      toggleGroup="$sourceDataType">
+            <font>
+               <Font name="Farsi Beirut" size="20.0"/>
+            </font>
+         </RadioButton>
+      </HBox>
+      <TextField fx:id="txtInputFile" layoutX="172.0" layoutY="157.0"
+                 prefHeight="28.0" prefWidth="146.0"
+                 text="E:\version\astan\material\bf\fbook  utf8   665534record.ISO"/>
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="329.0"
+             layoutY="158.0" text="آدرس فایل ورودی:" textAlignment="JUSTIFY"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <Button layoutX="127.0" layoutY="154.0"
+              mnemonicParsing="false"
+              onMouseClicked="#btnIsoInputFileHandler" prefHeight="28.0"
+              prefWidth="33.0" stylesheets="@../css/isoConvertStyle.css">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="FOLDER_OPEN" size="2em"
+                             text=""/>
+         </graphic>
+      </Button>
+      <RadioButton alignment="CENTER_RIGHT" contentDisplay="RIGHT"
+                   graphicTextGap="5.0" layoutX="230.0" layoutY="235.0"
+                   mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT"
+                   prefHeight="27.0" selected="true" text="آذرسا"
+                   textAlignment="RIGHT" textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <toggleGroup>
+            <ToggleGroup/>
+         </toggleGroup>
+      </RadioButton>
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="340.0"
+             layoutY="235.0" text="نوع فایل خروجی:" textAlignment="JUSTIFY"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <Button alignment="BASELINE_LEFT"
+              graphicTextGap="0.0" layoutY="381.0" mnemonicParsing="false"
+              onMouseClicked="#btnNextIsoConvert" prefHeight="60.0"
+              prefWidth="131.0" stylesheets="@../css/isoConvertStyle.css"
+              text=" بعدی" textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_LEFT"
+                             size="1em" text="" wrappingWidth="30.0"/>
+         </graphic>
+      </Button>
+   </Pane>
+   <Pane fx:id="IsoConvertPane3" disable="true" layoutX="-1.0"
+         prefHeight="400.0" prefWidth="519.0" stylesheets="@../css/styling.css"
+         visible="false">
+      <Label layoutX="325.0" layoutY="24.0" text="ایزو سیمرغ"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="30.0"/>
+         </font>
+      </Label>
+      <Label layoutX="368.0" layoutY="100.0" text="نوع ماده:"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <ComboBox id="types" fx:id="types" layoutX="120" layoutY="108.0"
+                prefWidth="187.0" value="BF">
+         <items>
+            <FXCollections
+                    fx:factory="observableArrayList">
+               <String fx:value="BF"/>
+               <String fx:value="BL"/>
+               <String fx:value="AF"/>
+               <String fx:value="AL"/>
+               <String fx:value="TF"/>
+               <String fx:value="TL"/>
+               <String fx:value="PF"/>
+               <String fx:value="PL"/>
+               <String fx:value="VF"/>
+               <String fx:value="VL"/>
+            </FXCollections>
+         </items>
+      </ComboBox>
+      <HBox fx:id="Typesim" alignment="CENTER_RIGHT" layoutX="34.0"
+            layoutY="124.0" prefHeight="48.0" prefWidth="429.0" spacing="3.0"
+            stylesheets="@../css/styling.css">
+         <padding>
+            <Insets right="3.0"/>
+         </padding>
+      </HBox>
+      <TextField fx:id="txtMappingPathsim" layoutX="174.0" layoutY="188.0"
+                 text="C:\Users\aliyari\IdeaProjects\Convertor\bf.xml"/>
+      <Label layoutX="337.0" layoutY="187.0" text=": mapping فایل"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <Button layoutX="126.0" layoutY="185.0"
+              mnemonicParsing="false"
+              onMouseClicked="#btnMappingInputFileHandler" prefHeight="28.0"
+              prefWidth="33.0" stylesheets="@../css/isoConvertStyle.css">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="FOLDER_OPEN" size="2em"
+                             text=""/>
+         </graphic>
+      </Button>
+      <Label layoutX="389.0" layoutY="235.0" prefHeight="26.0"
+             prefWidth="76.0" text="نام مرکز: " textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="centerNamesim" layoutX="137.0" layoutY="235.0"
+                 prefHeight="25.0" prefWidth="245.0"/>
+      <Label layoutX="383.0" layoutY="277.0" text="شماره ثبت: "
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <TextField layoutX="263.0" layoutY="278.0" prefHeight="25.0"
+                 prefWidth="111.0"/>
+      <Label layoutX="116.0" layoutY="278.0" text="کد محل نگهداری: "
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <Label layoutX="383.0" layoutY="330.0" text="تعداد رکورد:"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="counter_record2" layoutX="263.0" layoutY="330.0"
+                 prefHeight="25.0" prefWidth="111.0" text="0"/>
+      <TextField layoutX="44.0" layoutY="279.0" prefHeight="25.0"
+                 prefWidth="66.0"/>
+      <Button fx:id="btnConvertSim" contentDisplay="RIGHT" layoutX="4.0"
+              layoutY="381.0" mnemonicParsing="false"
+              onMouseClicked="#btnConvertHandler" prefHeight="60.0"
+              prefWidth="131.0" text="کانورت" textAlignment="RIGHT"
+              textFill="#312546">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="CHECK_CIRCLE"
+                             size="1.0em" textAlignment="RIGHT"/>
+         </graphic>
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <stylesheets>
+            <URL value="@../css/styling.css"/>
+            <URL value="@../css/isoConvertStyle.css"/>
+         </stylesheets>
+      </Button>
+      <Button fx:id="simorghCancel" contentDisplay="RIGHT" layoutX="379.0"
+              layoutY="388.0" minWidth="105.0" mnemonicParsing="false"
+              onMouseClicked="#btnCancel" prefHeight="48.0" prefWidth="136.0"
+              text="بازگشت" textFill="#312546">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_RIGHT"
+                             size="1.0em" textAlignment="RIGHT"/>
+         </graphic>
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <stylesheets>
+            <URL value="@../css/styling.css"/>
+            <URL value="@../css/isoConvertStyle.css"/>
+         </stylesheets>
+      </Button>
 
 
-         </children>
-      </Pane>
+   </Pane>
 
 
-      <Pane fx:id="IsoConvertPane2" disable="true" layoutX="-1.0" prefHeight="400.0" prefWidth="519.0" stylesheets="@../css/styling.css" visible="false">
-         <children>
-            <Label layoutX="325.0" layoutY="24.0" text="ایزو دیجیلیب" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="30.0" />
-               </font>
-            </Label>
-            <Label layoutX="368.0" layoutY="88.0" text="منابع موجود:" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <HBox fx:id="Type" alignment="CENTER_RIGHT" layoutX="34.0" layoutY="124.0" prefHeight="48.0" prefWidth="429.0" spacing="3.0" stylesheets="@../css/styling.css">
-               <padding>
-                  <Insets right="3.0" />
-               </padding>
-            </HBox>
-            <TextField fx:id="txtMappingPath" layoutX="174.0" layoutY="188.0" text="C:\Users\aliyari\IdeaProjects\Convertor\bf.xml" />
-            <Label layoutX="337.0" layoutY="187.0" text=": mapping فایل" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnMappingInputFile" layoutX="126.0" layoutY="185.0" mnemonicParsing="false" onMouseClicked="#btnMappingInputFileHandler" prefHeight="28.0" prefWidth="33.0" stylesheets="@../css/isoConvertStyle.css">
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="FOLDER_OPEN" size="2em" text="" />
-               </graphic>
-            </Button>
-            <Label layoutX="389.0" layoutY="235.0" prefHeight="26.0" prefWidth="76.0" text="نام مرکز:" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <TextField fx:id="centerName" layoutX="137.0" layoutY="235.0" prefHeight="25.0" prefWidth="245.0" />
-            <Label layoutX="383.0" layoutY="277.0" text="شماره ثبت:" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <TextField layoutX="263.0" layoutY="278.0" prefHeight="25.0" prefWidth="111.0" text="" />
-            <Label layoutX="116.0" layoutY="278.0" text="کد محل نگهداری:" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
+   <Pane fx:id="IsoConvertPane2" disable="true" layoutX="-1.0"
+         prefHeight="400.0" prefWidth="519.0" stylesheets="@../css/styling.css"
+         visible="false">
+      <Label layoutX="325.0" layoutY="24.0" text="ایزو دیجیلیب"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="30.0"/>
+         </font>
+      </Label>
+      <Label layoutX="368.0" layoutY="88.0" text="منابع موجود:"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <HBox fx:id="Type" alignment="CENTER_RIGHT" layoutX="34.0"
+            layoutY="124.0" prefHeight="48.0" prefWidth="429.0" spacing="3.0"
+            stylesheets="@../css/styling.css">
+         <padding>
+            <Insets right="3.0"/>
+         </padding>
+      </HBox>
+      <TextField fx:id="txtMappingPath" layoutX="174.0" layoutY="188.0"
+                 text="C:\Users\aliyari\IdeaProjects\Convertor\bf.xml"/>
+      <Label layoutX="337.0" layoutY="187.0" text=": mapping فایل"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <Button layoutX="126.0" layoutY="185.0"
+              mnemonicParsing="false"
+              onMouseClicked="#btnMappingInputFileHandler" prefHeight="28.0"
+              prefWidth="33.0" stylesheets="@../css/isoConvertStyle.css">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="FOLDER_OPEN" size="2em"
+                             text=""/>
+         </graphic>
+      </Button>
+      <Label layoutX="389.0" layoutY="235.0" prefHeight="26.0"
+             prefWidth="76.0" text="نام مرکز:" textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="centerName" layoutX="137.0" layoutY="235.0"
+                 prefHeight="25.0" prefWidth="245.0"/>
+      <Label layoutX="383.0" layoutY="277.0" text="شماره ثبت:"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <TextField layoutX="263.0" layoutY="278.0" prefHeight="25.0"
+                 prefWidth="111.0"/>
+      <Label layoutX="116.0" layoutY="278.0" text="کد محل نگهداری:"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
 
-            <Label layoutX="383.0" layoutY="330.0" text="تعداد رکورد:" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-            </Label>
-            <TextField fx:id="counter_record" layoutX="263.0" layoutY="330.0" prefHeight="25.0" prefWidth="111.0" text="0" />
+      <Label layoutX="383.0" layoutY="330.0" text="تعداد رکورد:"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="counter_record" layoutX="263.0" layoutY="330.0"
+                 prefHeight="25.0" prefWidth="111.0" text="0"/>
 
-            <TextField layoutX="44.0" layoutY="279.0" prefHeight="25.0" prefWidth="66.0" />
-            <Button fx:id="btnConvert" contentDisplay="RIGHT" layoutX="4.0" layoutY="381.0" mnemonicParsing="false" onMouseClicked="#btnConvertHandler" prefHeight="60.0" prefWidth="131.0" text="کانورت" textAlignment="RIGHT" textFill="#312546">
-            <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="CHECK_CIRCLE" size="1.0em" textAlignment="RIGHT" />
-               </graphic>
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-               <stylesheets>
-                  <URL value="@../css/styling.css" />
-                  <URL value="@../css/isoConvertStyle.css" />
-               </stylesheets>
-            </Button>
-            <Button fx:id="digiCancel" contentDisplay="RIGHT" layoutX="379.0" layoutY="388.0" minWidth="105.0" mnemonicParsing="false" onMouseClicked="#btnCancel" prefHeight="48.0" prefWidth="136.0" text="بازگشت" textAlignment="LEFT" textFill="#312546">
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_RIGHT" size="1.0em" textAlignment="RIGHT" />
-               </graphic>
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-               <stylesheets>
-                  <URL value="@../css/styling.css" />
-                  <URL value="@../css/isoConvertStyle.css" />
-               </stylesheets>
-            </Button>
-         </children>
-      </Pane>
-
-
-      <Pane fx:id="Pane4" disable="true" layoutX="-1.0" prefHeight="400.0" prefWidth="519.0" stylesheets="@../css/styling.css" visible="false">
-         <children>
-            <Label layoutX="100.0" layoutY="150.0" text="User" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="16.0" />
-               </font>
-            </Label>
-            <TextField layoutX="100.0" layoutY="180.0" prefHeight="25.0" prefWidth="88.0" fx:id="username" />
-
-            <Label layoutX="200.0" layoutY="150.0" text="PWD" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="16.0" />
-               </font>
-            </Label>
-            <TextField layoutX="200.0" layoutY="180.0" prefHeight="25.0" prefWidth="88.0" fx:id="password"/>
-            <Label layoutX="300.0" layoutY="150.0" text="Table" textFill="#312546">
-               <font>
-                  <Font name="Farsi Beirut" size="16.0" />
-               </font>
-            </Label>
-            <TextField layoutX="300.0" layoutY="180.0" prefHeight="25.0" prefWidth="88.0" fx:id="tablename"/>
-
-            <Button fx:id="prelevel" contentDisplay="RIGHT" layoutX="379.0" layoutY="388.0" minWidth="105.0" mnemonicParsing="false" onMouseClicked="#btnCancel" prefHeight="48.0" prefWidth="136.0" text="بازگشت" textAlignment="LEFT" textFill="#312546">
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_RIGHT" size="1.0em" textAlignment="RIGHT" />
-               </graphic>
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-               <stylesheets>
-                  <URL value="@../css/styling.css" />
-                  <URL value="@../css/isoConvertStyle.css" />
-               </stylesheets>
-            </Button>
-            <Button fx:id="btnDB" onMouseClicked="#DBConect" contentDisplay="RIGHT" layoutX="4.0" layoutY="381.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="131.0" text="کانورت" textAlignment="RIGHT" textFill="#312546">
-               <graphic>
-                  <FontAwesomeIcon fill="#312546" iconName="CHECK_CIRCLE" size="1.0em" textAlignment="RIGHT" />
-               </graphic>
-               <font>
-                  <Font name="Farsi Beirut" size="20.0" />
-               </font>
-               <stylesheets>
-                  <URL value="@../css/styling.css" />
-                  <URL value="@../css/isoConvertStyle.css" />
-               </stylesheets>
-            </Button>
-         </children>
-      </Pane>
+      <TextField layoutX="44.0" layoutY="279.0" prefHeight="25.0"
+                 prefWidth="66.0"/>
+      <Button contentDisplay="RIGHT" layoutX="4.0"
+              layoutY="381.0" mnemonicParsing="false"
+              onMouseClicked="#btnConvertHandler" prefHeight="60.0"
+              prefWidth="131.0" text="کانورت" textAlignment="RIGHT"
+              textFill="#312546">
+      <graphic>
+         <FontAwesomeIcon fill="#312546" iconName="CHECK_CIRCLE"
+                          size="1.0em" textAlignment="RIGHT"/>
+      </graphic>
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <stylesheets>
+            <URL value="@../css/styling.css"/>
+            <URL value="@../css/isoConvertStyle.css"/>
+         </stylesheets>
+      </Button>
+      <Button fx:id="digiCancel" contentDisplay="RIGHT" layoutX="379.0"
+              layoutY="388.0" minWidth="105.0" mnemonicParsing="false"
+              onMouseClicked="#btnCancel" prefHeight="48.0" prefWidth="136.0"
+              text="بازگشت" textFill="#312546">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_RIGHT"
+                             size="1.0em" textAlignment="RIGHT"/>
+         </graphic>
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <stylesheets>
+            <URL value="@../css/styling.css"/>
+            <URL value="@../css/isoConvertStyle.css"/>
+         </stylesheets>
+      </Button>
+   </Pane>
 
 
-   </children>
+   <Pane fx:id="Pane4" disable="true" layoutX="-1.0" prefHeight="400.0"
+         prefWidth="519.0" stylesheets="@../css/styling.css" visible="false">
+      <Label layoutX="100.0" layoutY="150.0" text="User" textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="16.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="username" layoutX="100.0" layoutY="180.0"
+                 prefHeight="25.0" prefWidth="88.0"/>
+
+      <Label layoutX="200.0" layoutY="150.0" text="PWD" textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="16.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="password" layoutX="200.0" layoutY="180.0"
+                 prefHeight="25.0" prefWidth="88.0"/>
+      <Label layoutX="300.0" layoutY="150.0" text="Table" textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="16.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="tablename" layoutX="300.0" layoutY="180.0"
+                 prefHeight="25.0" prefWidth="88.0"/>
+
+      <Button contentDisplay="RIGHT" layoutX="379.0"
+              layoutY="388.0" minWidth="105.0" mnemonicParsing="false"
+              onMouseClicked="#btnCancelDB" prefHeight="48.0"
+              prefWidth="136.0" text="بازگشت"
+              textFill="#312546">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_RIGHT"
+                             size="1.0em" textAlignment="RIGHT"/>
+         </graphic>
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <stylesheets>
+            <URL value="@../css/styling.css"/>
+            <URL value="@../css/isoConvertStyle.css"/>
+         </stylesheets>
+      </Button>
+      <Button contentDisplay="RIGHT" layoutX="4.0"
+              layoutY="381.0" mnemonicParsing="false"
+              onMouseClicked="#DBConect" prefHeight="60.0" prefWidth="131.0"
+              text="کانورت" textAlignment="RIGHT" textFill="#312546">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="CHECK_CIRCLE"
+                             size="1.0em" textAlignment="RIGHT"/>
+         </graphic>
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <stylesheets>
+            <URL value="@../css/styling.css"/>
+            <URL value="@../css/isoConvertStyle.css"/>
+         </stylesheets>
+      </Button>
+   </Pane>
+   <Pane fx:id="Pane5" disable="true" layoutX="-1.0" prefHeight="400.0"
+         prefWidth="519.0" stylesheets="@../css/styling.css" visible="false">
+      <Label layoutX="330.0" layoutY="180.0" text="آدرس فایل آذرسا"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="16.0"/>
+         </font>
+      </Label>
+      <Button layoutX="127.0" layoutY="180.0"
+              mnemonicParsing="false"
+              onMouseClicked="#btnIsoInputFileHandler1" prefHeight="28.0"
+              prefWidth="33.0" stylesheets="@../css/isoConvertStyle.css">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="FOLDER_OPEN" size="2em"
+                             text=""/>
+         </graphic>
+      </Button>
+      <TextField fx:id="mapp" layoutX="173.0" layoutY="180.0"
+                 prefHeight="25.0" prefWidth="140.0"/>
+      <Label layoutX="383.0" layoutY="108.0" text="نوع ماده"
+             textFill="#312546">
+         <font>
+            <Font name="Farsi Beirut" size="16.0"/>
+         </font>
+      </Label>
+      <ComboBox id="types" fx:id="typesmap" layoutX="175.0" layoutY="108.0"
+                prefWidth="150.0" value="BF">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="BF"/>
+               <String fx:value="BL"/>
+               <String fx:value="AF"/>
+               <String fx:value="AL"/>
+               <String fx:value="TF"/>
+               <String fx:value="TL"/>
+               <String fx:value="PF"/>
+               <String fx:value="PL"/>
+               <String fx:value="VF"/>
+               <String fx:value="VL"/>
+            </FXCollections>
+         </items>
+      </ComboBox>
+      <Button fx:id="prelevelmap" contentDisplay="RIGHT" layoutX="379.0"
+              layoutY="388.0" minWidth="105.0" mnemonicParsing="false"
+              onMouseClicked="#prelevelmap" prefHeight="48.0"
+              prefWidth="136.0" text="بازگشت"
+              textFill="#312546">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="CHEVRON_CIRCLE_RIGHT"
+                             size="1.0em" textAlignment="RIGHT"/>
+         </graphic>
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <stylesheets>
+            <URL value="@../css/styling.css"/>
+            <URL value="@../css/isoConvertStyle.css"/>
+         </stylesheets>
+      </Button>
+      <Button contentDisplay="RIGHT" layoutX="4.0" layoutY="381.0"
+              mnemonicParsing="false" onMouseClicked="#makemapping"
+              prefHeight="60.0" prefWidth="131.0" text="ایجاد"
+              textAlignment="RIGHT" textFill="#312546">
+         <graphic>
+            <FontAwesomeIcon fill="#312546" iconName="CHECK_CIRCLE"
+                             size="1.0em" textAlignment="RIGHT"/>
+         </graphic>
+         <font>
+            <Font name="Farsi Beirut" size="20.0"/>
+         </font>
+         <stylesheets>
+            <URL value="@../css/styling.css"/>
+            <URL value="@../css/isoConvertStyle.css"/>
+         </stylesheets>
+      </Button>
+   </Pane>
+
 
 </AnchorPane>

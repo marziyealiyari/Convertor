@@ -31,9 +31,9 @@ public class Utilities {
         return fileChooser.showOpenDialog(null);
     }
 
-    public static List ConvertByMappingFile(List<IsoRecord> isoRecords, Record mappingRecord) {
-        List<DataField> tempDatafield = new ArrayList<>();
-        List<DataField> tempDatafield2 = new ArrayList<>();
+    public static List<Record> ConvertByMappingFile(List<IsoRecord> isoRecords, Record mappingRecord) {
+        List<DataField> tempDatafield;
+        List<DataField> tempDatafield2;
         List<Record> convertedList = new ArrayList<>();
         Record tempRecord;
         for (IsoRecord record : isoRecords) {
@@ -83,7 +83,7 @@ public class Utilities {
         return convertedList;
     }
 
-    public static void checkData(Record tempRecord) {
+    private static void checkData(Record tempRecord) {
         for (DataField df : tempRecord.getDataFields()) {
             for (Subfield sf : df.getSubfields()) {
                 brev_eng(sf, tempRecord.getControlFields().get(0).getData().charAt(1));
@@ -259,24 +259,24 @@ public class Utilities {
         return type;
     }
 
-    public static void reverseFarsiNum(StringBuilder sb) {
+    private static void reverseFarsiNum(StringBuilder sb) {
         int i = 0;
         int farsi[] = {8364, 1662, 8218, 402, 8222, 8230, 8224, 8225, 710, 8240, 47, 1657};
-        StringBuilder temp1 = new StringBuilder();
+        StringBuilder temp1;
 
 
         while (i < sb.length()) {
             while (i < sb.length()) {
                 char characters = sb.charAt(i);
                 int ascii = (int) characters;
-                if (contains(farsi, ascii) == false) i++;
+                if (!contains(farsi, ascii)) i++;
                 else break;
             }
             int j = i;
             while (j < sb.length()) {
                 char characters2 = sb.charAt(j);
                 int ascii2 = (int) characters2;
-                if (contains(farsi, ascii2) == true) j++;
+                if (contains(farsi, ascii2)) j++;
                 else break;
             }
             if (i >= 0 & j > 0 & j > i + 1) {
@@ -332,7 +332,7 @@ public class Utilities {
 //        30 = 'ه' 1607
 //        31 = 'ي' 1740
     public static void changeFarsiString(StringBuilder sb) {
-        int farsi[][] = {
+        int farsi[][] = new int[][]{
                 {1575, 1570, 1576, 1662, 1578, 1579, 1580, 1670, 1581, 1582, 1583, 1584, 1585, 1586, 1688, 1587, 1588, 1589, 1590, 1591, 1592, 1593, 1594, 1601, 1602, 1708, 1604, 1605, 1608, 1607, 1740, 1575, 1711, 1705, 1606},
          /*separate*/{1711, 1670, 8217, 8221, 8211, 1705, 1681, 339, 8205, 160, 162, 163, 164, 165, 166, 167, 169, 171, 173, 175, 224, 1606, 1607, 233, 235, 1610, 1612, 244, 1617, 249, 8206, 1711, 239, 1610, 1616},
          /*Sticky*/  {8216, 8216, 8220, 8226, 8212, 8482, 8250, 8204, 1722, 1548, 162, 163, 164, 165, 166, 168, 1726, 172, 174, 175, 224, 1605, 231, 234, 1609, 238, 1614, 1615, 1617, 1618, 8207, 1711, 1611, 238, 247}
@@ -341,8 +341,8 @@ public class Utilities {
         };
         String parantez = "[]{}()<>";
         int x = 0;
-        int y = 0;
-        int charnump = 0;
+        int y;
+        int charnump;
         for (int i = 0; i < sb.length(); i++) {
             char charutf = (sb.charAt(i));
             int charnum = (int) charutf;
@@ -394,7 +394,7 @@ public class Utilities {
         }
     }
 
-    public static boolean contains(final int[] array, final int v) {
+    private static boolean contains(final int[] array, final int v) {
 
         boolean result = false;
 
@@ -434,7 +434,7 @@ public class Utilities {
     }
 
 
-    public static List fill(List<DataField> tempDatafield, IsoField isoField) {
+    private static List<DataField> fill(List<DataField> tempDatafield, IsoField isoField) {
         String temp;
         String access = "";
         String oldStr, newStr = "";
@@ -555,7 +555,7 @@ public class Utilities {
         return tempDatafield;
     }
 
-    private static List getMapping(IsoField isoField, Record mappingRecord) {
+    private static List<DataField> getMapping(IsoField isoField, Record mappingRecord) {
         List<DataField> mapping = new ArrayList<>();
         for (DataField df : mappingRecord.getDataFields()) {
             for (Subfield sf : df.getSubfields()) {
@@ -586,14 +586,14 @@ public class Utilities {
     }
 
 
-    private static List fixed(Record mappingRecord) {
+    private static List<DataField> fixed(Record mappingRecord) {
         List<DataField> mapping = new ArrayList<>();
         for (DataField df : mappingRecord.getDataFields()) {
             for (Subfield sf : df.getSubfields()) {
                 //   for (IsoSubField isf : isoField.getSubfiled()) {
                 //fixed
 
-                if (df.toString().indexOf("#") < 0) {
+                if (!df.toString().contains("#")) {
                     DataField temp = new DataFieldImpl(df.getTag(), df.getIndicator1(), df.getIndicator2());
                     for (Subfield sf2 : df.getSubfields()) {
                         Subfield s = new SubfieldImpl();

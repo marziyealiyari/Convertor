@@ -2,17 +2,21 @@ package Convert.Model;
 
 import Convert.IsoIF;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static home.controllers.Controller.counters_public;
 
 
 public class Nosa extends Iso implements IsoIF {
 
 
-    private static IsoIF instance = null;
-    private List<IsoRecord> isoRecords = null;
-    public static  String countPlus;
+    public static String countPlus;
+    private List isoRecords = null;
 
     //Cunstructors
     private Nosa() {
@@ -29,40 +33,45 @@ public class Nosa extends Iso implements IsoIF {
     }
 
 
-    public Nosa(File input, String docType) {
-        this.setInputFile(input);
+    private Nosa(String docType, BufferedReader br) {
+        // this.setInputFile(input);
         try {
-            isoRecords = read(docType);
+            isoRecords = read(docType, br);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
-    public static Nosa getInstance(File input) {
-        if (instance == null)
-            instance = new Nosa(input);
+//    public static Nosa getInstance(File input) {
+//        if (instance == null)
+//            instance = new Nosa(input);
+//        return (Nosa) instance;
+//    }
+
+    public static Nosa getInstance(String docType, BufferedReader br) {
+      //  if (instance == null)
+        IsoIF instance = new Nosa(docType, br);
         return (Nosa) instance;
     }
 
-    public static Nosa getInstance(File input, String docType) {
-        if (instance == null)
-            instance = new Nosa(input, docType);
-        return (Nosa) instance;
-    }
-
-    public static boolean checkIso(String item) {
+    static boolean checkIso(String item) {
         int i, recordLength, isolength, isoDir;
-        i = item.indexOf("\u001E");
-        isolength = Integer.parseInt(item.substring(1, 5));
+        isolength=0;
+        try {
+           isolength = Integer.parseInt(item.substring(1, 5));
+       }
+      catch (NumberFormatException e) {
+          System.out.println(counters_public);
+      }
         recordLength = item.length();
         if (item.substring(20, 22).equals("55"))
             if (isolength == recordLength)
                 return true;
         return false;
     }
+
     //Getter and Setter
-    public List<IsoRecord> getIsoRecords() {
+    public List getIsoRecords() {
         return isoRecords;
     }
 
@@ -71,30 +80,37 @@ public class Nosa extends Iso implements IsoIF {
     }
 
     //Methodes
-    @Override
-    public List read() throws FileNotFoundException {
-        return read("");
-    }
+    //@Override
+//    public List read() throws FileNotFoundException {
+//        return read("");
+//    }
 
-    public List read(String docType) throws FileNotFoundException {
+    private List<IsoRecord> read(String docType, BufferedReader br) throws FileNotFoundException {
         String data = "";
         File iso = this.getInputFile();
-        List<IsoRecord> isoList = new ArrayList<IsoRecord>();
+        List<IsoRecord> isoList = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(iso)));
-         //   InputStream br = new BufferedInputStream(new FileInputStream((iso)));
             do {
                 do
-                 data = data.concat(br.readLine());
-                while (!(data.endsWith("\u001E\u001D")) );
+                    try {
+                        data = data.concat(br.readLine());
+                    } catch (OutOfMemoryError t) {
+                        System.exit(0);
+                    }
+                while (!(data.endsWith("\u001E\u001D")));
                 if (!docType.equals(""))
-                    isoList.add(new IsoRecord(data,"nosa"));
+                    isoList.add(new IsoRecord(data, "nosa"));
                 data = br.readLine();
-            } while (data != null & isoList.size()!=1000);
+            } while (data != null & isoList.size() != 1000);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return isoList;
+    }
+
+    @Override
+    public List read() throws FileNotFoundException {
+        return null;
     }
 
     @Override
